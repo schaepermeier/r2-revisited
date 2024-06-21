@@ -1,5 +1,7 @@
 library(tidyverse)
 
+theme_set(theme_bw())
+
 d <- 2L
 fid <- 2L
 iid <- 1L
@@ -28,7 +30,7 @@ compute_ideal_weights <- function(y) {
 
 continuous_r2 <- function(y, ideal) {
   nondom <- ecr::nondominated(y)
-  y_nondom <- y[,nondom]
+  y_nondom <- y[,nondom,drop = F]
   ord <- order(y_nondom[1,])
   y_ordered <- y_nondom[,ord]
   
@@ -39,7 +41,7 @@ continuous_r2 <- function(y, ideal) {
   # ideal_props <- y_transformed[,1] / y_transformed[,2]
   # ideal_w1 <- 1 - ideal_props / (1 + ideal_props)
   
-  compute_ideal_weights(y_transformed[1,])
+  # compute_ideal_weights(y_transformed[1,])
 
   lapply(1:n_pf, function(idx) {
     y1 <- y_transformed[idx,1]
@@ -67,3 +69,4 @@ continuous_r2 <- function(y, ideal) {
     (lower_ws[1]**2 - mid_ws[1]**2) / 2 * y1 + (upper_ws[2]**2 - mid_ws[2]**2) / 2 * y2
   }) %>% unlist %>% sum
 }
+
