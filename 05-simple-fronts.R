@@ -6,7 +6,9 @@ len <- 1e4
 y1 <- seq(eps,1 - eps, length.out = len)
 # y <- rbind(y1, (1 - sqrt(y1))**2) # convex
 # y <- rbind(y1, sqrt(1 - y1**2)) # concave
-y <- rbind(y1, (1 - y1)) # linear
+# y <- rbind(y1, (1 - y1)) # linear
+# y <- rbind(y1, c(rep(1, len - 1), 0)) # nadir
+y <- rbind(y1, c(1, rep(0, len - 1))) # ideal
 ideal <- c(0,0)
 
 ggplot(aes(x = y[1,], y = y[2,]), data = data.frame()) +
@@ -21,7 +23,9 @@ ggplot(aes(x = y[1,], y = y[2,]), data = data.frame()) +
 
 # ggsave("convex-schematic.pdf", width = 2, height = 1.9)
 # ggsave("concave-schematic.pdf", width = 2, height = 1.9)
-ggsave("linear-schematic.pdf", width = 2, height = 1.9)
+# ggsave("linear-schematic.pdf", width = 2, height = 1.9)
+# ggsave("nadir-schematic.pdf", width = 2, height = 1.9)
+ggsave("ideal-schematic.pdf", width = 2, height = 1.9)
 
 continuous_r2(y, ideal)
 

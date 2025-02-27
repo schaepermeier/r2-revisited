@@ -3,7 +3,7 @@ library(tidyverse)
 theme_set(theme_bw())
 
 d <- 2L
-fid <- 2L
+fid <- 1L
 iid <- 1L
 
 fn <- smoof::makeBiObjBBOBFunction(d, fid, iid)

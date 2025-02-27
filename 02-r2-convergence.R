@@ -2,24 +2,19 @@ library(tidyverse)
 
 theme_set(theme_bw())
 
-d <- 2L
-fid <- 1L
-iid <- 1L
+fn = function(x) {
+  c1 = c(0.5, 0)
+  c2 = c(-0.5, 0)
+  
+  c(sum((x - c1)**2), sum((x - c2)**2))
+}
 
-fn <- smoof::makeBiObjBBOBFunction(d, fid, iid)
-fn_data <- moleopt:::generateBiObjBBOBData(d, fid, iid)
-
-ideal <- fn_data$ideal_point
-nadir <- fn_data$ref_point
-
-set.seed(0xC0FFEE)
+ideal <- c(0, 0)
+nadir <- c(1, 1)
 
 n <- 1e5
 
-X <- sapply(1:n, function(x) {
-  moleopt::runif_box(smoof::getLowerBoxConstraints(fn),
-                     smoof::getUpperBoxConstraints(fn))
-})
+X <- rbind(seq(-0.5, 0.5, by = 1e-3), 0)
 
 y <- apply(X, 2, fn)
 
@@ -64,7 +59,7 @@ r2s <- sapply(Ns, function(N) {
 })
 
 # true_r2 <- continuous_r2((y - ideal) / (nadir - ideal), c(0, 0))
-true_r2 <- continuous_r2(y, ideal)
+true_r2 <- continuous_r2(y + 1e-8, ideal)
 
 cbind.data.frame(N = Ns, r2 = r2s) %>% 
   ggplot(aes(N, r2)) +
